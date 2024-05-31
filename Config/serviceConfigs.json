@@ -1,0 +1,8 @@
+{
+  "service": {
+    "gemma_service": {
+      "port": 8081,
+      "ip": "0.0.0.0"
+    }
+  }
+}

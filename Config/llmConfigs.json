@@ -1,0 +1,16 @@
+{
+
+  "gemma_configs": {
+    "gemma_token": "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",
+    "model_id": "google/gemma-2b",
+    "repetition_penalty": 1.1,
+    "top_k": 1,
+    "num_return_sequences": 1,
+    "temperature": 0.1,
+    "chunk_array_length_limit": 4,
+    "token_lower_limit": 5000,
+    "token_upper_limit": 8000,
+    "input_tokens_per_chunk": 5000
+  }
+
+}
