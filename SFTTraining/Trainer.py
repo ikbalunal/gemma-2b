@@ -188,11 +188,13 @@ if __name__ == "__main__":
     data_ = dataset_.get_data()
 
     print("3- Training the model...")
-    train = SFTTrain(model_, tokenizer_, data_, lora_config_, Dataset.formatting_func).train()
+    trainer_ = SFTTrain(model_, tokenizer_, data_, lora_config_, Dataset.formatting_func).train()
 
     print("4- Saving the fine-tuned model...")
-    save_model = SaveAndMerge(train, model_id_, fine_tuned_model_id_, access_token=access_token_)
+    save_model = SaveAndMerge(trainer=trainer_, fine_tuned_model_id=fine_tuned_model_id_, model_id=model_id_, access_token=access_token_)
+    print("4.1- Saving the unmerged model...")
     save_model.save_ft_unmerged_model()
+    print("4.2- Saving the merged model...")
     save_model.save_ft_merged_model()
 
     print("End of the training process.")
