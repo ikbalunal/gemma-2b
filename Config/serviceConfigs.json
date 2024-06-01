@@ -4,5 +4,8 @@
       "port": 8081,
       "ip": "0.0.0.0"
     }
+  },
+  "http": {
+    "address": "http://127.0.0.1:8081/gemma-generate"
   }
 }
