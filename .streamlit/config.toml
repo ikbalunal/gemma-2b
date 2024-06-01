@@ -1,0 +1,7 @@
+[theme]
+base="light"
+
+[server]
+port = 8080
+enableCORS=false
+enableXsrfProtection=false

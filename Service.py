@@ -1,10 +1,16 @@
+#!/usr/bin/env python
+# -*- coding:utf-8 -*-
+# @Filename: Service.py
+# @Author: ikbal
+# @Time: 6/1/2024 3:06 AM
+
 import torch
 from flask import Flask, request, jsonify
 
 from transformers import AutoTokenizer, AutoModelForCausalLM
 from transformers import BitsAndBytesConfig
 
-from LLMUtils import get_config
+from Utils import get_config
 
 app = Flask(__name__)
 
