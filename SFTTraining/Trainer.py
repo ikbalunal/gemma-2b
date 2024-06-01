@@ -26,7 +26,7 @@ class WandbCallback(TrainerCallback):
         if state.is_local_process_zero:
             wandb.log(logs)
 class GetArguments:
-    def __init__(self, model_id, bnb_config, device_map="auto", access_token=None):
+    def __init__(self, model_id, bnb_config, device_map, access_token):
         self.model_id = model_id
         self.bnb_config = bnb_config
         self.device_map = device_map
@@ -122,7 +122,7 @@ class SaveAndMerge:
             low_cpu_mem_usage=True,
             return_dict=True,
             torch_dtype=torch.float16,
-            device_map={"": 0}
+            device_map="auto"
         )
 
         # Merge the fine-tuned model with LoRA adaption along with the base model.
@@ -173,10 +173,11 @@ if __name__ == "__main__":
     bnb_config_ = GetArguments.get_bnb_config()
     lora_config_ = GetArguments.get_lora_config()
 
-    print("1.1- Getting Tokenizer...")
-    tokenizer_ = GetArguments(model_id_, bnb_config_, access_token_).get_tokenizer()
-    print("1.2- Getting Model...")
-    model_ = GetArguments(model_id_, bnb_config_, access_token_).get_model()
+    print("1.1- Getting Model...")
+    model_ = GetArguments(model_id_, bnb_config_, device_map="auto", access_token=access_token_).get_model()
+    print("1.2- Getting Tokenizer...")
+    tokenizer_ = GetArguments(model_id_, bnb_config_, device_map="auto", access_token= access_token_).get_tokenizer()
+
 
     print("2- Getting the dataset...")
     dataset_ = Dataset(dataset_name="b-mc2/sql-create-context", tokenizer=tokenizer_)
