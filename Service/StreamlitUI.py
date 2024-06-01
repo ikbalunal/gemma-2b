@@ -15,7 +15,7 @@ st.set_page_config(
     layout="wide",
 )
 
-chat_dir = "./Chats"
+chat_dir = "Chats"
 os.makedirs(chat_dir, exist_ok=True)
 
 url = get_config('Config/serviceConfigs.json')['http']['address']
