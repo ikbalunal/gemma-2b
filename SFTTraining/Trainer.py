@@ -87,8 +87,8 @@ class SFTTrain:
             model=self.model,
             train_dataset=self.data["train"],
             args=TrainingArguments(
-                per_device_train_batch_size=4,
-                gradient_accumulation_steps=4,
+                per_device_train_batch_size=2,
+                gradient_accumulation_steps=8,
                 warmup_steps=2,
                 max_steps=75,
                 learning_rate=2e-4,
