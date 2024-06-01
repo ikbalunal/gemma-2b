@@ -130,7 +130,7 @@ class SaveAndMerge:
         #)
 
         # Merge the fine-tuned model with LoRA adaption along with the base model.
-        fine_tuned_merged_model = PeftModel.from_pretrained(self.base_model, f"Models/{self.fine_tuned_model}_unmerged", config=self.trainer.model.config)
+        fine_tuned_merged_model = PeftModel.from_pretrained(self.base_model, f"Models/{self.fine_tuned_model}_unmerged")
 
         return fine_tuned_merged_model.merge_and_unload()
     def save_ft_unmerged_model(self):
