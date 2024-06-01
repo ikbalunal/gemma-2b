@@ -4,6 +4,7 @@
     "gemma_token": "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",
     "model_id": "google/gemma-2b",
     "fined_tuned_model_id": "science_data_fine_tuned_gemma2b",
+    "wandb_api_key" : "7909f0e85072f6912a6f465faa6d2325868e9ee5",
     "repetition_penalty": 1.1,
     "top_k": 1,
     "num_return_sequences": 1,

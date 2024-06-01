@@ -147,6 +147,18 @@ if __name__ == "__main__":
     if not os.path.exists("Models"):
         os.makedirs("Models")
 
+
+
+    print("Start training process...")
+
+    config_ = get_config("TrainConfig/gemmaConfigs.json")
+    model_id_ = config_["gemma_configs"]["model_id"]
+    fine_tuned_model_id_ = config_["gemma_configs"]["fine_tuned_model_id"]
+    wandb_api_key_ = config_["gemma_configs"]["wandb_api_key"]
+    access_token_ = config_["gemma_configs"]["gemma_token"]
+
+    print("Initializing wandb...")
+    wandb.login(key=wandb_api_key_)
     wandb.init(
         project="gemma_2b_sft",
         config={
@@ -156,13 +168,6 @@ if __name__ == "__main__":
             "epochs": 75,
         }
     )
-
-    print("Start training process...")
-
-    config_ = get_config("TrainConfig/gemmaConfigs.json")
-    model_id_ = config_["gemma_configs"]["model_id"]
-    fine_tuned_model_id_ = config_["gemma_configs"]["fine_tuned_model_id"]
-    access_token_ = config_["gemma_configs"]["gemma_token"]
 
     print("1- Getting the model and tokenizer...")
     bnb_config_ = GetArguments.get_bnb_config()
