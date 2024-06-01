@@ -4,6 +4,7 @@
 # @Author: ikbal
 # @Time: 6/1/2024 3:06 AM
 
+import os
 import torch
 from flask import Flask, request, jsonify
 
@@ -14,8 +15,19 @@ from Utils import get_config
 
 app = Flask(__name__)
 
-def load_model(llm_configs):
-    model_id = llm_configs['gemma_configs']['model_id']
+def load_model(llm_configs,model_path=None, tokenizer_path=None):
+
+    if model_path and tokenizer_path:
+        model_id = model_path
+        tokenizer_id = tokenizer_path
+        print(f"Model Path : {model_id}")
+        print(f"Tokenizer Path : {tokenizer_id}")
+    else:
+        model_id = llm_configs['gemma_configs']['model_id']
+        tokenizer_id = llm_configs['gemma_configs']['model_id']
+        print(f"Model ID : {model_id}")
+        print(f"Tokenizer ID : {tokenizer_id}")
+
     access_token = llm_configs['gemma_configs']['gemma_token']
 
     bnb_config = BitsAndBytesConfig(
@@ -23,7 +35,7 @@ def load_model(llm_configs):
         bnb_4bit_quant_type="nf4",
         bnb_4bit_compute_dtype=torch.bfloat16
     )
-    tokenizer_ = AutoTokenizer.from_pretrained(model_id, token=access_token)
+    tokenizer_ = AutoTokenizer.from_pretrained(tokenizer_id, token=access_token)
     model_ = AutoModelForCausalLM.from_pretrained(model_id, quantization_config=bnb_config, device_map="auto", token=access_token)
     # model_.to('cuda')
     return model_, tokenizer_
@@ -58,7 +70,20 @@ def generate():
     return jsonify({"response": output})
 
 if __name__ == "__main__":
+
+    project_base_path = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
     llm_config = get_config('Config/llmConfigs.json')
     service_config = get_config('Config/serviceConfigs.json')
-    model, tokenizer = load_model(llm_config)
+
+    finetuned_model_id = llm_config['gemma_configs']['model_id']
+
+    if llm_config['gemma_configs']['use_sft_model']:
+        model_path = os.path.join(project_base_path, f"SFTTraining/Models/{llm_config['gemma_configs']['fine_tuned_model_id']}_merged")
+        tokenizer_path = os.path.join(project_base_path, f"SFTTraining/{llm_config['gemma_configs']['fine_tuned_model_id']}")
+        model, tokenizer = load_model(llm_config, model_path=model_path, tokenizer_path=tokenizer_path)
+
+    else:
+        model, tokenizer = load_model(llm_config)
+
     app.run(host=service_config['service']['gemma_service']['ip'], port=service_config['service']['gemma_service']['port'])
