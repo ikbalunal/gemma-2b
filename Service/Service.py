@@ -76,8 +76,6 @@ if __name__ == "__main__":
     llm_config = get_config('Config/llmConfigs.json')
     service_config = get_config('Config/serviceConfigs.json')
 
-    finetuned_model_id = llm_config['gemma_configs']['model_id']
-
     if llm_config['gemma_configs']['use_sft_model']:
         model_path = os.path.join(project_base_path, f"SFTTraining/Models/{llm_config['gemma_configs']['fine_tuned_model_id']}_merged")
         tokenizer_path = os.path.join(project_base_path, f"SFTTraining/{llm_config['gemma_configs']['fine_tuned_model_id']}")
