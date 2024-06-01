@@ -111,25 +111,26 @@ class SFTTrain:
         return trainer
 
 class SaveAndMerge:
-    def __init__(self, trainer, fine_tuned_model_id, model_id,access_token):
+    def __init__(self, base_model, trainer, fine_tuned_model_id, model_id,access_token):
         self.trainer = trainer
         self.fine_tuned_model = fine_tuned_model_id
         self.model_id = model_id
         self.access_token = access_token
+        self.base_model = base_model
 
     def merge_model(self):
 
-        base_model = AutoModelForCausalLM.from_pretrained(
-            self.model_id,
-            low_cpu_mem_usage=True,
-            return_dict=True,
-            torch_dtype=torch.float16,
-            device_map="auto",
-            token=self.access_token
-        )
+        #base_model_ = AutoModelForCausalLM.from_pretrained(
+        #    self.model_id,
+        #    low_cpu_mem_usage=True,
+        #    return_dict=True,
+        #    torch_dtype=torch.float16,
+        #    device_map="auto",
+        #    token=self.access_token
+        #)
 
         # Merge the fine-tuned model with LoRA adaption along with the base model.
-        fine_tuned_merged_model = PeftModel.from_pretrained(base_model, self.fine_tuned_model)
+        fine_tuned_merged_model = PeftModel.from_pretrained(self.base_model, self.fine_tuned_model)
 
         return fine_tuned_merged_model.merge_and_unload()
     def save_ft_unmerged_model(self):
@@ -191,7 +192,7 @@ if __name__ == "__main__":
     trainer_ = SFTTrain(model_, tokenizer_, data_, lora_config_, Dataset.formatting_func).train()
 
     print("4- Saving the fine-tuned model...")
-    save_model = SaveAndMerge(trainer=trainer_, fine_tuned_model_id=fine_tuned_model_id_, model_id=model_id_, access_token=access_token_)
+    save_model = SaveAndMerge(base_model=model_,trainer=trainer_, fine_tuned_model_id=fine_tuned_model_id_, model_id=model_id_, access_token=access_token_)
     print("4.1- Saving the unmerged model...")
     save_model.save_ft_unmerged_model()
     print("4.2- Saving the merged model...")
