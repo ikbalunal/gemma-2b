@@ -111,10 +111,11 @@ class SFTTrain:
         return trainer
 
 class SaveAndMerge:
-    def __init__(self, trainer, fine_tuned_model_id, model_id):
+    def __init__(self, trainer, fine_tuned_model_id, model_id,access_token):
         self.trainer = trainer
         self.fine_tuned_model = fine_tuned_model_id
         self.model_id = model_id
+        self.access_token = access_token
 
     def merge_model(self):
 
@@ -123,7 +124,8 @@ class SaveAndMerge:
             low_cpu_mem_usage=True,
             return_dict=True,
             torch_dtype=torch.float16,
-            device_map="auto"
+            device_map="auto",
+            token=self.access_token
         )
 
         # Merge the fine-tuned model with LoRA adaption along with the base model.
@@ -189,7 +191,7 @@ if __name__ == "__main__":
     train = SFTTrain(model_, tokenizer_, data_, lora_config_, Dataset.formatting_func).train()
 
     print("4- Saving the fine-tuned model...")
-    save_model = SaveAndMerge(train, model_id_, fine_tuned_model_id_)
+    save_model = SaveAndMerge(train, model_id_, fine_tuned_model_id_, access_token=access_token_)
     save_model.save_ft_unmerged_model()
     save_model.save_ft_merged_model()
 
