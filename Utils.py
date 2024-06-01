@@ -1,9 +1,3 @@
-#!/usr/bin/env python
-# -*- coding:utf-8 -*-
-# @Filename: Utils.py
-# @Author: ikbal
-# @Time: 6/1/2024 3:06 AM
-
 import torch
 import json
 
