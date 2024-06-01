@@ -13,6 +13,7 @@ from datasets import load_dataset
 from trl import SFTTrainer
 from peft import LoraConfig, PeftModel
 from transformers import AutoTokenizer, AutoModelForCausalLM, TrainerCallback, BitsAndBytesConfig, TrainingArguments
+from huggingface_hub import login
 
 def get_config(conf_path):
 
@@ -157,6 +158,8 @@ if __name__ == "__main__":
     wandb_api_key_ = config_["gemma_configs"]["wandb_api_key"]
     access_token_ = config_["gemma_configs"]["gemma_token"]
 
+
+    login(token="your_gemma_model_access_token")
     print("Initializing wandb...")
     wandb.login(key=wandb_api_key_)
     wandb.init(
@@ -178,14 +181,12 @@ if __name__ == "__main__":
     print("1.2- Getting Tokenizer...")
     tokenizer_ = GetArguments(model_id_, bnb_config_, device_map="auto", access_token= access_token_).get_tokenizer()
 
-
     print("2- Getting the dataset...")
     dataset_ = Dataset(dataset_name="b-mc2/sql-create-context", tokenizer=tokenizer_)
     data_ = dataset_.get_data()
 
     print("3- Training the model...")
     train = SFTTrain(model_, tokenizer_, data_, lora_config_, Dataset.formatting_func).train()
-    train.save_model("outputs")
 
     print("4- Saving the fine-tuned model...")
     save_model = SaveAndMerge(train, model_id_, fine_tuned_model_id_)
