@@ -143,23 +143,23 @@ class SaveAndMerge:
 if __name__ == "__main__":
 
     if not os.path.exists("Outputs"):
+        print("Creating Outputs directory...")
         os.makedirs("Outputs")
 
     if not os.path.exists("Models"):
+        print("Creating Models directory...")
         os.makedirs("Models")
 
-
-
     print("Start training process...")
-
     config_ = get_config("TrainConfig/gemmaConfigs.json")
     model_id_ = config_["gemma_configs"]["model_id"]
     fine_tuned_model_id_ = config_["gemma_configs"]["fine_tuned_model_id"]
     wandb_api_key_ = config_["gemma_configs"]["wandb_api_key"]
     access_token_ = config_["gemma_configs"]["gemma_token"]
 
+    print("Logging into huggingface...")
+    login(token=access_token_)
 
-    login(token="your_gemma_model_access_token")
     print("Initializing wandb...")
     wandb.login(key=wandb_api_key_)
     wandb.init(
