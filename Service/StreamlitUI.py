@@ -18,7 +18,7 @@ st.set_page_config(
 chat_dir = "Chats"
 os.makedirs(chat_dir, exist_ok=True)
 
-url = get_config('Config/serviceConfigs.json')['http']['address']
+url = get_config('Config/serviceConfigs.json')['http']['ngrok']
 def load_chats():
     chats_ = [f.replace('.json', '') for f in os.listdir(chat_dir) if f.endswith('.json')]
     return chats_

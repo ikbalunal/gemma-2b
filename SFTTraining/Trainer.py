@@ -67,11 +67,11 @@ class Dataset:
 
     def get_data(self):
         data = load_dataset(self.dataset_name)
-        return data.map(lambda samples: self.tokenizer(samples["question"], samples["context"]), batched=True)
+        return data.map(lambda samples: self.tokenizer(samples["Question"], samples["Context"]), batched=True)
 
     @staticmethod
     def formatting_func(example):
-        text = f"Question: {example['question'][0]}\nContext: {example['context'][0]}\nAnswer: {example['answer'][0]}"
+        text = f"Answer: {example['Answer'][0]}"
         return [text]
 
 class SFTTrain:
@@ -170,7 +170,7 @@ if __name__ == "__main__":
         config={
             "learning_rate": 2e-4,
             "architecture": "Causal LM",
-            "dataset": "sql-create-context",
+            "dataset": "Aashi/Science_Q_and_A_dataset",
             "epochs": 75,
         }
     )
@@ -185,7 +185,7 @@ if __name__ == "__main__":
     tokenizer_ = GetArguments(model_id_, bnb_config_, device_map="auto", access_token= access_token_).get_tokenizer()
 
     print("2- Getting the dataset...")
-    dataset_ = Dataset(dataset_name="b-mc2/sql-create-context", tokenizer=tokenizer_)
+    dataset_ = Dataset(dataset_name="Aashi/Science_Q_and_A_dataset", tokenizer=tokenizer_)
     data_ = dataset_.get_data()
 
     print("3- Training the model...")
