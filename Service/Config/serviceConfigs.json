@@ -6,6 +6,7 @@
     }
   },
   "http": {
-    "address": "http://127.0.0.1:8081/gemma-generate"
+    "address": "http://127.0.0.1:8081/gemma-generate",
+    "ngrok" : "https://xxxx.ngrok-free.app/gemma-generate"
   }
 }

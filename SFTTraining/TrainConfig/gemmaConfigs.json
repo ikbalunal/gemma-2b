@@ -1,10 +1,10 @@
 {
 
   "gemma_configs": {
-    "gemma_token": "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",
+    "gemma_token": "xxx",
     "model_id": "google/gemma-2b",
     "fine_tuned_model_id": "science_data_fine_tuned_gemma2b",
-    "wandb_api_key" : "7909f0e85072f6912a6f465faa6d2325868e9ee5",
+    "wandb_api_key" : "xxx",
     "use_sft_model": true
   }
 
